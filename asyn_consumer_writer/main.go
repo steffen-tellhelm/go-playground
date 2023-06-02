@@ -12,6 +12,7 @@ import (
 )
 
 const batchSize = 10
+const waitSec = 1
 
 type Message string
 
@@ -32,7 +33,7 @@ func consumer(ctx context.Context) <-chan []Message {
 	msgCh := make(chan []Message, 1)
 	var msgBatch []Message
 	msgId := 0
-	timer := time.NewTicker(1 * time.Second)
+	timer := time.NewTicker(waitSec * time.Second)
 
 	go func() {
 		for {
@@ -49,6 +50,7 @@ func consumer(ctx context.Context) <-chan []Message {
 					msgCh <- msgBatch
 					msgBatch = nil
 				}
+				timer.Reset(waitSec * time.Second)
 			case <-time.After(time.Duration(timespan) * time.Millisecond):
 				log.Printf("consumed batch size: %v\n", amount)
 				for i := 0; i < amount; i++ {
