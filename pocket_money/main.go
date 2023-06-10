@@ -20,7 +20,7 @@ func main() {
 	amount := 0.5
 
 	for pd.Before(time.Now()) {
-		fmt.Printf("pay out at %v: %v, sum: €%.2f\n", pd, Payout, amount)
+		fmt.Printf("pay out at %v: €%.2f, sum: €%.2f\n", pd, Payout, amount)
 		pd = pd.Add(Week)
 		amount += Payout
 	}
